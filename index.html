@@ -6,7 +6,7 @@
 
 
     <!-- Bootstrap core CSS -->
-    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<!--     <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet"> -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
     <script src="app.js"></script>
 
@@ -21,33 +21,49 @@
 
                 {nome:'Pedro' , telefone: '0999899899'},
                 {nome:'Day' , telefone: '434343433'},
-                {nome:'Flavio' , telefone: '767667677'},
+                {nome:'Flavio' , telefone: '767667677'}
             ];
+
+            $scope.carros = [
+
+                {nome:'Fusca' , placa: 'AAA-111' , categoria: 'novos'},
+                {nome:'Gol' , placa: 'MGA-4343', categoria: 'seminovos'},
+                {nome:'Honda' , placa: 'MHH-789', categoria: 'velhos'}
+            ];            
 
             $scope.adicionarContato = function (contato){
                 $scope.contatos.push( angular.copy ( contato ) );
+                delete $scope.contato;
             };
+
+           
+
         });
 
     </script>
 </head>
 
-<body>
+<body  ng-controller="meuController">
 
-  <div ng-controller="meuController">
+  <div>
 
     <h4> {{ message }} </h4>
 
-    <table class="table table-striped">
+    {{ contatos }}
+    <table class="table">
 
       <tr>
+      <th></th>
         <th>Nome</th>
         <th>telefone</th>
+        <th>Carro</th>
       </tr>
 
-      <tr ng-repeat="contato in contatos">
+      <tr ng-class="" ng-repeat="contato in contatos">
+        <td> <input type="checkbox" ng-model="contato.selecionado" /> </td>
         <td> {{ contato.nome }} </td>
         <td> {{ contato.telefone }}</td>
+        <td> {{ contato.carro.nome }}</td>
       </tr>
     </table>
 
@@ -56,7 +72,11 @@
     <input class="form-control" type="text" ng-model="contato.nome" />
     <input class="form-control" type="text" ng-model="contato.telefone" />
 
-    <button classo="btn" ng-click="adicionarContato( contato )">Adicionar</button>
+    <select class="form-control" ng-model="contato.carro" ng-options="carro.nome group by carro.categoria for carro in carros">
+        <option value=""> Selecione carro </option>
+    </select>
+
+    <button ng-disabled="!contato.nome || !contato.telefone" classo="btn" ng-click="adicionarContato( contato )">Adicionar</button>
  
   </div>
 
